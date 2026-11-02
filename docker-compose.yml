@@ -1,0 +1,14 @@
+services:
+  db:
+    image: mysql:8
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: next-blok-3
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:

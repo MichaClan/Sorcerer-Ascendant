@@ -1,0 +1,13 @@
+import "dotenv/config";
+import { defineConfig } from "prisma/config";
+
+export default defineConfig({
+	schema: "prisma/schema.prisma",
+	migrations: {
+		path: "prisma/migrations",
+		seed: "npx tsx prisma/seed.ts"
+	},
+	datasource: {
+		url: `mysql://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`,
+	},
+});
