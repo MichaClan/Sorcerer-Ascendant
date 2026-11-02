@@ -1,24 +1,14 @@
-import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 import { PrismaClient } from "../generated/prisma/client";
 
-// we maken een globaal variabel, dit is nodig voor de dev server van nextjs,
-// zodat we niet op elke request een nieuwe verbinding maken.
+// We maken een globale variabele. Dit is nodig voor de dev server van Next.js
+// om te voorkomen dat er bij elke hot-reload een nieuwe verbinding wordt gemaakt.
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
-// de adapter die prisma ondersteuning geeft voor MySQL
-const adapter = new PrismaMariaDb({
-  host: process.env.DB_HOST, // localhost verbinding naar xampp/docker
-  user: process.env.DB_USER, // gebruikersnaam
-  password: process.env.DB_PASS, // password -- leeg
-  database: process.env.DB_NAME, // de database naam
-  port: Number(process.env.DB_PORT), // port naar de localhost xampp/docker verbinding
-  allowPublicKeyRetrieval: true
-});
-
-// BELANGRIJKSTE DEEL, het variabel die we in andere bestanden kunnen IMPORTEREN
-// Dit is de connectie met de DB
-export const prisma = globalForPrisma.prisma ?? new PrismaClient({ adapter });
+// De Prisma client maakt nu direct verbinding met PostgreSQL via de DATABASE_URL uit je .env
+export const prisma =
+  globalForPrisma.prisma ??
+  new PrismaClient();
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
